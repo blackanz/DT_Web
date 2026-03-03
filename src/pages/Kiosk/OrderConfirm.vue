@@ -1,6 +1,13 @@
 <script setup lang="ts">
+import { onMounted } from 'vue';
+import { useRouter } from 'vue-router';
 import { useOrderStore } from '@/stores/orderStore';
 const store = useOrderStore();
+const router = useRouter();
+
+onMounted(() => {
+  if (!store.orderItems || store.orderItems.length === 0) router.replace('/');
+});
 </script>
 
 <template>
