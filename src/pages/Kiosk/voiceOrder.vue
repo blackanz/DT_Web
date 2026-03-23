@@ -1,7 +1,8 @@
 <script setup lang="ts">
-import { useOrderStore } from '@/stores/orderStore';
+import { useOrderStore } from '@/stores/store';
+
 const store = useOrderStore();
-const fakeSTT = () => store.setVoiceText('아메리카노 한 잔');
+const fakeSTT = () => store.setVoiceText('아메리카노 한 잔'); //임시 텍스트
 </script>
 
 <template>

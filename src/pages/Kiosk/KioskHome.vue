@@ -1,13 +1,17 @@
 <script setup lang="ts">
 import { onMounted } from 'vue';
 import { useRouter } from 'vue-router';
+import { useOrderStore } from '@/stores/store';
 
 const router = useRouter();
+const store = useOrderStore();
 
 onMounted(() => {
+  store.clear();
+
   setTimeout(() => {
-    router.push('/recommend');
-  }, 2000); // 2초
+    router.push('/recmd');
+  }, 3000); // 3초
 });
 </script>
 

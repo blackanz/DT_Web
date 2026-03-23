@@ -1,12 +1,21 @@
-import { ref, computed } from 'vue'
-import { defineStore } from 'pinia'
+import { defineStore } from 'pinia';
 
-export const useCounterStore = defineStore('counter', () => {
-  const count = ref(0)
-  const doubleCount = computed(() => count.value * 2)
-  function increment() {
-    count.value++
-  }
-
-  return { count, doubleCount, increment }
-})
+export const useOrderStore = defineStore('order', {
+  state: () => ({
+    customerId: '',
+    orderItems: [] as string[],
+    voiceText: '',
+  }),
+  actions: {
+    addItem(item: string) {
+      this.orderItems.push(item);
+    },
+    setVoiceText(text: string) {
+      this.voiceText = text;
+    },
+    clear() {
+      this.orderItems = [];
+      this.voiceText = '';
+    },
+  },
+});

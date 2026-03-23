@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { onMounted } from 'vue';
 import { useRouter } from 'vue-router';
-import { useOrderStore } from '@/stores/orderStore';
+import { useOrderStore } from '@/stores/store';
 const store = useOrderStore();
 const router = useRouter();
 
@@ -15,4 +15,5 @@ onMounted(() => {
   <ul>
     <li v-for="(item, i) in store.orderItems" :key="i">{{ item }}</li>
   </ul>
+  <button @click="$router.push('/final')">주문 완료</button>
 </template>

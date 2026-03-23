@@ -1,6 +1,6 @@
 import { defineStore } from 'pinia';
 
-function getTodayString() {
+function getToday(): string {
   const today = new Date();
   const year = String(today.getFullYear()).slice(-2);
   const month = String(today.getMonth() + 1).padStart(2, '0');
@@ -13,7 +13,7 @@ function getNumofCar(carId: string) {
 }
 
 function getNextSequence(): string {
-  const todayKey = 'orderCounter-' + getTodayString();
+  const todayKey = 'orderCounter-' + getToday();
   const current = Number(localStorage.getItem(todayKey) || '0') + 1;
   localStorage.setItem(todayKey, String(current));
   return String(current).padStart(3, '0');
@@ -21,11 +21,20 @@ function getNextSequence(): string {
 
 export const useOrderStore = defineStore('order', {
   state: () => ({
-    customerId: null as string | null,
+    // customerId: null as string | null,
+    customerId: '12가3456' as string | null, //테스트용
     orderNum: null as string | null,
     orderItems: [] as string[],
-    voiceText: '',
+    voiceText: null as string | null,
+    seq: null as string | null,
   }),
+
+  getters: {
+    carPart(state): string | null {
+      if (!state.customerId) return null;
+      return getNumofCar(state.customerId);
+    },
+  },
 
   actions: {
     setCustomer(id: string) {
@@ -40,19 +49,19 @@ export const useOrderStore = defineStore('order', {
       this.voiceText = text;
     },
 
-    OrderComplete() {
-      if (!this.customerId) return;
+    orderComplete() {
+      if (!this.customerId) return false;
 
-      const date = getTodayString();
+      const date = getToday();
       const carPart = getNumofCar(this.customerId);
       const seq = getNextSequence();
 
+      this.seq = seq;
       this.orderNum = `${date}-${carPart}-${seq}`;
+      return true;
     },
 
     clear() {
-      this.customerId = null;
-      this.orderNum = null;
       this.orderItems = [];
       this.voiceText = '';
     },
