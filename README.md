@@ -41,4 +41,8 @@ npm run dev
 npm run build
 ```
 
-- localStorage로 동작 시 브라우저 콘솔에서 localStorage.clear(); 실행으로 초기화
+### localStorage로 동작 시 브라우저 콘솔에서 초기화
+
+```sh
+localStorage.clear();
+```
