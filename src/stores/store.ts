@@ -19,20 +19,50 @@ function getNextSequence(): string {
   return String(current).padStart(3, '0');
 }
 
+export type menuItem = {
+  id: number;
+  name: string;
+  price: number;
+  quantity?: number;
+};
+
 export const useOrderStore = defineStore('order', {
   state: () => ({
     // customerId: null as string | null,
     customerId: '12가3456' as string | null, //테스트용
     orderNum: null as string | null,
-    orderItems: [] as string[],
+    orderItems: [] as menuItem[],
     voiceText: null as string | null,
     seq: null as string | null,
   }),
 
   getters: {
+    // 차 번호 기반 고객 ID 생성
     carPart(state): string | null {
       if (!state.customerId) return null;
       return getNumofCar(state.customerId);
+    },
+
+    total(state): number {
+      return state.orderItems.reduce((sum, item) => sum + item.price, 0);
+    },
+
+    orderContents(state): any[] {
+      const list = state.orderItems;
+      if (list.length === 0) return [];
+
+      const lastIndex = Array.from(new Set(list.map((item) => item.id)));
+      return lastIndex.map((id) => {
+        const sameItems = list.filter((item) => item.id === id);
+        return {
+          ...sameItems[0],
+          count: sameItems.length,
+          itemTotal: sameItems.reduce((sum, i) => sum + i.price, 0),
+        };
+      });
+    },
+    totalPrice(state): number {
+      return state.orderItems.reduce((sum, item) => sum + item.price, 0);
     },
   },
 
@@ -41,8 +71,26 @@ export const useOrderStore = defineStore('order', {
       this.customerId = id;
     },
 
-    addItem(item: string) {
+    addItem(item: menuItem) {
       this.orderItems.push(item);
+    },
+
+    increaseItem(id: number) {
+      const item = this.orderItems.find((i) => i.id === id);
+      if (item) {
+        this.orderItems = [...this.orderItems];
+        console.log('추가 성공:', this.orderItems.length);
+      }
+    },
+
+    decreaseItem(id: number) {
+      const lastIndex = this.orderItems.map((item) => item.id).lastIndexOf(id);
+      if (lastIndex !== -1) {
+        const newItems = [...this.orderItems];
+        newItems.splice(lastIndex, 1);
+        this.orderItems = newItems;
+        console.log('삭제 성공:', this.orderItems.length);
+      }
     },
 
     setVoiceText(text: string) {
@@ -51,19 +99,15 @@ export const useOrderStore = defineStore('order', {
 
     orderComplete() {
       if (!this.customerId) return false;
-
-      const date = getToday();
-      const carPart = getNumofCar(this.customerId);
-      const seq = getNextSequence();
-
-      this.seq = seq;
-      this.orderNum = `${date}-${carPart}-${seq}`;
+      this.seq = getNextSequence();
+      this.orderNum = `${getToday()}-${getNumofCar(this.customerId)}-${this.seq}`;
       return true;
     },
 
     clear() {
       this.orderItems = [];
       this.voiceText = '';
+      this.orderNum = null;
     },
   },
 });
