@@ -47,12 +47,13 @@ export const useOrderStore = defineStore('order', {
       return state.orderItems.reduce((sum, item) => sum + item.price, 0);
     },
 
-    orderContents(state): any[] {
+    //실시간 주문 반영
+    orderCart(state): any[] {
       const list = state.orderItems;
       if (list.length === 0) return [];
 
-      const lastIndex = Array.from(new Set(list.map((item) => item.id)));
-      return lastIndex.map((id) => {
+      const uniqueIds = Array.from(new Set(list.map((item) => item.id)));
+      return uniqueIds.map((id) => {
         const sameItems = list.filter((item) => item.id === id);
         return {
           ...sameItems[0],
@@ -61,6 +62,8 @@ export const useOrderStore = defineStore('order', {
         };
       });
     },
+
+    // 총 합계 계산
     totalPrice(state): number {
       return state.orderItems.reduce((sum, item) => sum + item.price, 0);
     },
@@ -75,14 +78,16 @@ export const useOrderStore = defineStore('order', {
       this.orderItems.push(item);
     },
 
+    // 수량 증가
     increaseItem(id: number) {
       const item = this.orderItems.find((i) => i.id === id);
       if (item) {
-        this.orderItems = [...this.orderItems];
+        this.orderItems.push({ ...item });
         console.log('추가 성공:', this.orderItems.length);
       }
     },
 
+    // 수량 감소
     decreaseItem(id: number) {
       const lastIndex = this.orderItems.map((item) => item.id).lastIndexOf(id);
       if (lastIndex !== -1) {
@@ -93,10 +98,17 @@ export const useOrderStore = defineStore('order', {
       }
     },
 
+    // 항목 삭제
+    removeItem(id: number) {
+      this.orderItems = this.orderItems.filter((item) => item.id !== id);
+      console.log('항목 삭제 완료');
+    },
+
     setVoiceText(text: string) {
       this.voiceText = text;
     },
 
+    // 최종 주문 번호 생성
     orderComplete() {
       if (!this.customerId) return false;
       this.seq = getNextSequence();
@@ -104,6 +116,7 @@ export const useOrderStore = defineStore('order', {
       return true;
     },
 
+    // 초기화
     clear() {
       this.orderItems = [];
       this.voiceText = '';

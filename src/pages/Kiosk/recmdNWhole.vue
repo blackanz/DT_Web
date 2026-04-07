@@ -1,10 +1,11 @@
 <script setup lang="ts">
 import { ref } from 'vue';
 import { useOrderStore, type menuItem } from '@/stores/store';
+import orderCart from '@/components/orderCart.vue';
 import { storeToRefs } from 'pinia';
 
 const store = useOrderStore();
-const { orderContents, totalPrice } = storeToRefs(store);
+const { totalPrice } = storeToRefs(store);
 const activeTab = ref('추천');
 const fPrice = (p: number) => p.toLocaleString('ko-KR');
 function addMenu(menu: menuItem) {
@@ -20,7 +21,7 @@ const menuCategories = [
       { id: 3, name: '카라멜 마키아또', price: 4000 },
       { id: 4, name: '카푸치노', price: 4000 },
       { id: 5, name: '카페모카', price: 4000 },
-      { id: 6, name: '카페라떼', price: 4500 },
+      { id: 6, name: '카페라떼', price: 4000 },
     ],
   },
   {
@@ -55,7 +56,7 @@ const menuCategories = [
 
 const recommendMenus = [
   { id: 1, name: '아메리카노', price: 3000 },
-  { id: 6, name: '카페라떼', price: 4500 },
+  { id: 6, name: '카페라떼', price: 4000 },
   { id: 9, name: '딸기요거트스무디', price: 4500 },
   { id: 8, name: '밀크쉐이크', price: 4000 },
   { id: 11, name: '레몬에이드', price: 3500 },
@@ -121,23 +122,10 @@ const recommendMenus = [
     <hr />
 
     <div class="order-summary">
-      <div class="sum-header">
+      <div class="sum-list">
         <h2>주문 내역</h2>
         <span class="total-price">합계: {{ fPrice(totalPrice) }}원</span>
-      </div>
-      <div class="sum-list">
-        <div v-for="item in orderContents" :key="item.id" class="sum-item">
-          <span class="name">{{ item.name }}</span>
-          <div class="controls">
-            <button @click="store.decreaseItem(item.id)">-</button>
-            <span class="count">{{ item.count }}</span>
-            <button @click="store.increaseItem(item.id)">+</button>
-          </div>
-          <span class="price">{{ fPrice(item.itemTotal) }}원</span>
-        </div>
-        <div v-if="orderContents.length === 0" class="empty">
-          담긴 메뉴가 없습니다.
-        </div>
+        <orderCart />
       </div>
     </div>
 
