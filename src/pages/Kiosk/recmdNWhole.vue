@@ -67,20 +67,14 @@ const recommendMenus = [
 <template>
   <div class="menu-page">
     <h1>반갑습니다, {{ store.carPart }}님!</h1>
-    <nav class="tab-container">
+    <nav class="category-tabs">
       <button
-        :class="{ active: activeTab === '추천' }"
-        @click="activeTab = '추천'"
+        v-for="cat in ['추천', ...menuCategories.map((c) => c.name)]"
+        :key="cat"
+        :class="{ active: activeTab === cat }"
+        @click="activeTab = cat"
       >
-        추천!
-      </button>
-      <button
-        v-for="cat in menuCategories"
-        :key="cat.name"
-        :class="{ active: activeTab === cat.name }"
-        @click="activeTab = cat.name"
-      >
-        {{ cat.name }}
+        {{ cat }}
       </button>
     </nav>
 
@@ -141,3 +135,91 @@ const recommendMenus = [
     </div>
   </div>
 </template>
+
+<style scoped>
+.menu-page {
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+  padding: 20px;
+}
+
+.category-tabs {
+  display: flex;
+  gap: 7px;
+  overflow-x: auto;
+  padding: 10px;
+}
+
+.category-tabs button {
+  height: 42px;
+  padding: 15px 25px;
+  background: #dcdde1;
+  white-space: nowrap;
+  font-size: 1.2rem;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.category-tabs button.active {
+  background: var(--primary);
+  background-color: gray;
+  color: white;
+  transform: scale(1.1);
+}
+
+.menu-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 15px;
+  margin-top: 20px;
+}
+
+.menu-btn,
+.rec-btn {
+  background: var(--white);
+  padding: 20px 10px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+  height: 100px;
+  font-size: 1rem;
+  line-height: 1.5;
+}
+
+.order-summary {
+  flex-shrink: 0;
+  margin-top: auto;
+  background: #f1f2f6;
+  padding: 20px;
+  border-radius: 20px 20px 0 0;
+}
+
+.total-price {
+  float: right;
+  font-size: 1.5rem;
+  color: var(--primary);
+  font-weight: 800;
+}
+
+.action-btn {
+  display: flex;
+  gap: 10px;
+  padding: 15px 0;
+}
+
+.action-btn div {
+  flex: 1;
+}
+
+.action-btn button {
+  width: 100%;
+  padding: 20px;
+  font-size: 1.2rem;
+  background: var(--secondary);
+  color: black;
+}
+
+.action-btn .next button {
+  background: var(--primary);
+}
+</style>

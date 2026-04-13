@@ -47,3 +47,31 @@ onMounted(() => {
   </div>
   <button @click="$router.push('/')">처음 화면으로 돌아가기</button>
 </template>
+
+<style scoped>
+.order.complete {
+  text-align: center;
+  padding: 100px 20px;
+}
+
+.order.complete h1 {
+  font-size: 3rem;
+  color: var(--primary);
+}
+
+.count.down {
+  text-align: center;
+  background: #eee;
+  padding: 20px;
+  margin: 20px;
+  border-radius: 15px;
+}
+
+button {
+  display: block;
+  margin: 0 auto;
+  padding: 15px 30px;
+  background: var(--secondary);
+  color: white;
+}
+</style>

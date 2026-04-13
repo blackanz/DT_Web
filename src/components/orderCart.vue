@@ -40,3 +40,60 @@ const fPrice = (p: number) => p.toLocaleString('ko-KR');
     </table>
   </div>
 </template>
+
+<style>
+.order-list {
+  border-radius: 10px;
+}
+
+.order-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 10px;
+  background: white;
+  border-radius: 10px;
+  overflow: hidden;
+}
+
+.order-table th {
+  width: 33.3%;
+  background: #2f3640;
+  color: white;
+  padding: 10px;
+}
+
+.order-table td {
+  padding: 15px 10px;
+  border-bottom: 1px solid #eee;
+  text-align: center;
+}
+
+.qty-control {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+}
+
+.qty-control button {
+  width: 30px;
+  height: 30px;
+  background: #eee;
+}
+
+.item-total button {
+  margin-left: 10px;
+  background: #ff7675;
+  color: white;
+  border-radius: 50%;
+  width: 25px;
+  height: 25px;
+}
+
+.empty {
+  display: table-cell;
+  height: 30px;
+  vertical-align: middle;
+  background-color: #ffffff;
+}
+</style>
