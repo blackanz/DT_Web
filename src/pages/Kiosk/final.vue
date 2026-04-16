@@ -50,8 +50,8 @@ onMounted(() => {
 
 <style scoped>
 .order.complete {
-  text-align: center;
   padding: 100px 20px;
+  text-align: center;
 }
 
 .order.complete h1 {
@@ -60,18 +60,23 @@ onMounted(() => {
 }
 
 .count.down {
-  text-align: center;
-  background: #eee;
-  padding: 20px;
   margin: 20px;
+  padding: 20px;
   border-radius: 15px;
+
+  text-align: center;
+
+  background: #eee;
 }
 
 button {
   display: block;
+
   margin: 0 auto;
   padding: 15px 30px;
-  background: var(--secondary);
+
   color: white;
+
+  background: var(--secondary);
 }
 </style>
